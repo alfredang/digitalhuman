@@ -40,8 +40,8 @@ export default async function Home() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 lg:grid-cols-2">
-          <div>
+        <div className="mx-auto grid max-w-6xl items-start gap-10 px-4 pb-12 pt-6 lg:grid-cols-2">
+          <div className="lg:pt-6">
             <span className="inline-block rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-brand">
               Powered by MiniMax M3 + Speech 2.8
             </span>
