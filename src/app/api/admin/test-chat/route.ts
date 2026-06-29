@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   try {
     const reply = await quickAsk(
       "You are a helpful assistant verifying API connectivity. Answer in one short sentence.",
-      prompt || "Say hello and confirm you are MiniMax M3.",
+      (typeof prompt === "string" ? prompt : "").slice(0, 2000) || "Say hello and confirm you are MiniMax M3.",
     );
     return NextResponse.json({ ok: true, reply });
   } catch (e) {

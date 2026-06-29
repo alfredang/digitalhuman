@@ -7,7 +7,7 @@ import { synthesize } from "@/lib/minimax/tts";
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
-const schema = z.object({ text: z.string().min(1) });
+const schema = z.object({ text: z.string().min(1).max(5000) });
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   if (!(await requireAdmin())) return NextResponse.json({ error: "Forbidden" }, { status: 403 });

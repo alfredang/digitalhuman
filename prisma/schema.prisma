@@ -102,6 +102,21 @@ model Setting {
   updatedAt      DateTime @updatedAt
 }
 
+// Lead-magnet enquiries (e.g. "Request a Digital Human Demo")
+model Lead {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  company   String?
+  phone     String?
+  interest  String? // what they want demoed / message
+  source    String   @default("digital-human-demo")
+  status    String   @default("new") // new | contacted | closed
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
 model RenderJob {
   id        String   @id @default(cuid())
   type      String // "voice-clone" | "talking-clip"

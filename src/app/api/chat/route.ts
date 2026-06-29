@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { orchestrate, type AgentEvent } from "@/lib/agent/orchestrate";
+import { rateLimit, clientIp } from "@/lib/ratelimit";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 120;
@@ -16,6 +17,14 @@ function sse(event: AgentEvent | { type: "conversation"; id: string }) {
 }
 
 export async function POST(req: Request) {
+  // Public, unauthenticated, and spends money on LLM + TTS — throttle per IP.
+  if (!rateLimit(`chat:${clientIp(req)}`, 20, 60_000)) {
+    return new Response(JSON.stringify({ error: "Too many requests" }), {
+      status: 429,
+      headers: { "Content-Type": "application/json", "Retry-After": "60" },
+    });
+  }
+
   const parsed = schema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
     return new Response(JSON.stringify({ error: "Invalid input" }), { status: 400 });

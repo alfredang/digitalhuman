@@ -8,7 +8,7 @@ import { toAbsoluteUrl } from "@/lib/storage";
 export const dynamic = "force-dynamic";
 export const maxDuration = 120;
 
-const schema = z.object({ sampleUrl: z.string() });
+const schema = z.object({ sampleUrl: z.string().max(2000) });
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   if (!(await requireAdmin())) return NextResponse.json({ error: "Forbidden" }, { status: 403 });

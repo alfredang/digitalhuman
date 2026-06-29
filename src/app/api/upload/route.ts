@@ -11,7 +11,9 @@ export async function POST(req: Request) {
 
   const form = await req.formData().catch(() => null);
   const file = form?.get("file");
-  const prefix = (form?.get("prefix") as string) || "media";
+  // Whitelist the storage prefix (defense-in-depth against path traversal in keys).
+  const rawPrefix = (form?.get("prefix") as string) || "media";
+  const prefix = /^[a-z0-9_-]{1,32}$/i.test(rawPrefix) ? rawPrefix : "media";
   if (!(file instanceof File)) {
     return NextResponse.json({ error: "No file provided" }, { status: 400 });
   }

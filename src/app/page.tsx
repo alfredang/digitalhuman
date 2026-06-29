@@ -1,92 +1,106 @@
 import Link from "next/link";
+import {
+  GraduationCap, ShoppingBag, Landmark, HeartPulse, Hotel, Building2, Home as HomeIcon, RadioTower,
+  Mic, Video, Languages, BrainCircuit, Code2, Camera, type LucideIcon,
+} from "lucide-react";
 import { prisma } from "@/lib/db";
 import ChatWidget from "@/components/ChatWidget";
+import LeadForm from "@/components/LeadForm";
+import SiteFooter from "@/components/SiteFooter";
 
 export const dynamic = "force-dynamic";
 
-const COURSES = [
-  { title: "AI & Machine Learning", desc: "Python, LLMs, and applied ML for the workplace.", icon: "🤖" },
-  { title: "Data Analytics", desc: "Power BI, SQL and data storytelling — WSQ funded.", icon: "📊" },
-  { title: "Cybersecurity", desc: "Hands-on defensive security and ethical hacking.", icon: "🛡️" },
-  { title: "Cloud & DevOps", desc: "AWS, Docker and CI/CD for modern teams.", icon: "☁️" },
-  { title: "Web & Low-Code", desc: "Next.js, automation and rapid app building.", icon: "🌐" },
-  { title: "Digital Marketing", desc: "SEO, social and AI-assisted content.", icon: "📈" },
+const INDUSTRIES: { icon: LucideIcon; title: string; desc: string }[] = [
+  { icon: GraduationCap, title: "Education", desc: "Course advisors, 24/7 student support, multilingual onboarding and tutoring." },
+  { icon: ShoppingBag, title: "Retail & E-commerce", desc: "Virtual shopping assistants that recommend products and answer FAQs instantly." },
+  { icon: Landmark, title: "Finance & Banking", desc: "Explain products, pre-qualify leads, and guide customers through applications." },
+  { icon: HeartPulse, title: "Healthcare", desc: "Appointment guidance, patient FAQs, and pre-visit triage in any language." },
+  { icon: Hotel, title: "Hospitality & Travel", desc: "Concierge avatars for bookings, local tips, and round-the-clock guest service." },
+  { icon: Building2, title: "Government & Public", desc: "Accessible service kiosks that explain schemes and answer citizen queries." },
+  { icon: HomeIcon, title: "Real Estate", desc: "Lifelike agents that qualify buyers and walk through listings on your site." },
+  { icon: RadioTower, title: "Telecom & Utilities", desc: "Deflect support tickets with avatars that handle plans, billing and outages." },
+];
+
+const CAPABILITIES: { icon: LucideIcon; title: string; desc: string }[] = [
+  { icon: Mic, title: "Natural voice", desc: "Sub-second, expressive speech with voice cloning via MiniMax Speech 2.8." },
+  { icon: Video, title: "Realistic lip-sync", desc: "Talking-head video so the avatar looks and feels human." },
+  { icon: Languages, title: "40+ languages", desc: "One avatar serves multilingual audiences — no separate stacks." },
+  { icon: BrainCircuit, title: "Agentic & grounded", desc: "Answers from your real content; can look things up and book consultations." },
+  { icon: Code2, title: "Embed anywhere", desc: "Drop one line of script onto any website — live in minutes." },
+  { icon: Camera, title: "Build from a photo", desc: "Create a presenter from a single photo, webcam capture or short clip." },
 ];
 
 export default async function Home() {
-  const demoAvatar = await prisma.avatar.findFirst({
-    where: { status: "READY" },
-    orderBy: { createdAt: "asc" },
-  });
+  const demoAvatar = await prisma.avatar.findFirst({ where: { status: "READY" }, orderBy: { createdAt: "asc" } });
 
   return (
     <div className="bg-white text-slate-800">
       {/* Nav */}
-      <header className="sticky top-0 z-10 border-b border-slate-100 bg-white/80 backdrop-blur">
+      <header className="sticky top-0 z-20 border-b border-slate-100 bg-white/85 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <span className="font-bold">
-            Tertiary<span className="text-brand">Training</span>
-          </span>
+          <span className="font-bold">Tertiary<span className="text-brand">Training</span></span>
           <nav className="flex items-center gap-4 text-sm">
-            <a href="#courses" className="hover:text-brand">Courses</a>
-            <a href="#why" className="hover:text-brand">Why us</a>
-            <a href="#advisor" className="hover:text-brand">AI Advisor</a>
-            <Link href="/login" className="rounded-lg bg-brand px-3 py-1.5 text-white hover:bg-brand-600">
-              Admin
-            </Link>
+            <a href="#industries" className="hidden hover:text-brand sm:inline">Industries</a>
+            <a href="#capabilities" className="hidden hover:text-brand sm:inline">Features</a>
+            <a href="#demo" className="hidden hover:text-brand sm:inline">Live demo</a>
+            <Link href="/login" className="hidden text-slate-500 hover:text-brand sm:inline">Admin</Link>
+            <a href="#enquire" className="rounded-lg bg-brand px-3 py-1.5 font-medium text-white hover:bg-brand-600">Book a demo</a>
           </nav>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="mx-auto grid max-w-6xl items-start gap-10 px-4 pb-12 pt-6 lg:grid-cols-2">
-          <div className="lg:pt-6">
-            <span className="inline-block rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-brand">
-              Powered by MiniMax M3 + Speech 2.8
+      <section className="relative overflow-hidden bg-gradient-to-b from-indigo-50/70 to-white">
+        <div className="pointer-events-none absolute -top-24 right-0 h-80 w-80 rounded-full bg-indigo-200/40 blur-3xl" />
+        <div className="mx-auto grid max-w-6xl items-start gap-10 px-4 pb-12 pt-10 lg:grid-cols-2">
+          <div className="lg:pt-8">
+            <span className="inline-block rounded-full bg-white px-3 py-1 text-xs font-medium text-brand ring-1 ring-indigo-100">
+              Enterprise AI Digital Humans · Powered by MiniMax M3 or Google Gemini
             </span>
             <h1 className="mt-4 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
-              Meet your <span className="text-brand">AI course educator</span> — live, lifelike, 24/7.
+              We build your <span className="text-brand">24/7 AI digital human</span> — you just embed it.
             </h1>
             <p className="mt-4 text-lg text-slate-600">
-              Talk to a digital human that answers questions about our WSQ &amp; professional training courses by voice —
-              grounded in real course content, with lifelike lip-sync.
+              A done-for-you service: we create your branded avatar, clone your voice, train it on your knowledge
+              (RAG), and hand you an embed link for your website. Lifelike, voice-enabled customer service &amp;
+              presenting in 40+ languages — for education, retail, finance and beyond.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <a href="#advisor" className="rounded-xl bg-brand px-5 py-3 font-medium text-white hover:bg-brand-600">
-                Talk to the advisor
+              <a href="#enquire" className="rounded-xl bg-brand px-5 py-3 font-medium text-white shadow-sm hover:bg-brand-600">
+                Book a free demo
               </a>
-              <a href="#courses" className="rounded-xl border border-slate-300 px-5 py-3 font-medium hover:bg-slate-50">
-                Browse courses
-              </a>
+              {demoAvatar && (
+                <a href="#demo" className="rounded-xl border border-slate-300 bg-white px-5 py-3 font-medium hover:bg-slate-50">
+                  Talk to a live avatar
+                </a>
+              )}
             </div>
-            <div className="mt-8 flex gap-8 text-sm text-slate-500">
-              <div><span className="block text-2xl font-bold text-slate-900">40+</span>languages</div>
-              <div><span className="block text-2xl font-bold text-slate-900">1M</span>token context</div>
-              <div><span className="block text-2xl font-bold text-slate-900">24/7</span>availability</div>
+            <div className="mt-8 grid max-w-md grid-cols-3 gap-4">
+              {[["40+", "languages"], ["24/7", "availability"], ["1-line", "to embed"]].map(([n, l]) => (
+                <div key={l} className="rounded-xl bg-white p-3 text-center shadow-sm ring-1 ring-slate-100">
+                  <span className="block text-xl font-bold text-slate-900">{n}</span>
+                  <span className="text-xs text-slate-500">{l}</span>
+                </div>
+              ))}
+            </div>
+            {/* fills the space under the hero text */}
+            <p className="mt-8 text-xs font-medium uppercase tracking-wide text-slate-400">Use it for</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {["Customer service", "Sales & lead-gen", "Onboarding", "Training", "Reception / kiosk", "Product demos"].map((t) => (
+                <span key={t} className="rounded-full bg-white px-3 py-1 text-xs text-slate-600 ring-1 ring-slate-200">{t}</span>
+              ))}
             </div>
           </div>
 
           <div className="lg:pl-6">
             {demoAvatar ? (
-              <ChatWidget
-                avatarId={demoAvatar.id}
-                name={demoAvatar.name}
-                greeting={demoAvatar.greeting}
-                portraitUrl={demoAvatar.portraitUrl ?? undefined}
-                compact
-              />
+              <ChatWidget avatarId={demoAvatar.id} name={demoAvatar.name} greeting={demoAvatar.greeting} portraitUrl={demoAvatar.portraitUrl ?? undefined} compact />
             ) : (
               <div className="grid h-[520px] place-items-center rounded-2xl bg-slate-50 text-center ring-1 ring-slate-200">
                 <div className="px-6">
                   <p className="text-5xl">🧑‍🏫</p>
                   <p className="mt-4 font-medium">No avatar yet</p>
-                  <p className="mt-1 text-sm text-slate-500">
-                    Sign in to the admin and create your first digital human.
-                  </p>
-                  <Link href="/login" className="mt-4 inline-block text-brand hover:underline">
-                    Go to admin →
-                  </Link>
+                  <Link href="/login" className="mt-2 inline-block text-brand hover:underline">Go to admin →</Link>
                 </div>
               </div>
             )}
@@ -94,74 +108,120 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Courses */}
-      <section id="courses" className="bg-slate-50 py-16">
+      {/* Industries */}
+      <section id="industries" className="bg-white py-16">
         <div className="mx-auto max-w-6xl px-4">
-          <h2 className="text-center text-3xl font-bold">Popular training tracks</h2>
-          <p className="mt-2 text-center text-slate-600">SkillsFuture &amp; WSQ-aligned. Ask the AI advisor for fees and schedules.</p>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {COURSES.map((c) => (
-              <div key={c.title} className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100">
-                <div className="text-3xl">{c.icon}</div>
-                <h3 className="mt-3 font-semibold">{c.title}</h3>
-                <p className="mt-1 text-sm text-slate-600">{c.desc}</p>
+          <div className="text-center">
+            <h2 className="text-3xl font-bold">One avatar platform, every industry</h2>
+            <p className="mx-auto mt-2 max-w-2xl text-slate-600">
+              Deploy a branded digital human that serves, sells and presents — wherever your customers are.
+            </p>
+          </div>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {INDUSTRIES.map(({ icon: Icon, title, desc }) => (
+              <div key={title} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-lg">
+                <div className="grid h-11 w-11 place-items-center rounded-xl bg-indigo-50 text-brand">
+                  <Icon className="h-6 w-6" strokeWidth={1.75} />
+                </div>
+                <h3 className="mt-3 font-semibold text-slate-900">{title}</h3>
+                <p className="mt-1 text-sm text-slate-600">{desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Why */}
-      <section id="why" className="py-16">
+      {/* Capabilities */}
+      <section id="capabilities" className="bg-slate-50 py-16">
         <div className="mx-auto max-w-6xl px-4">
-          <h2 className="text-center text-3xl font-bold">Why a digital human educator?</h2>
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold">Everything you need for a lifelike presenter</h2>
+            <p className="mx-auto mt-2 max-w-2xl text-slate-600">Voice, video, languages and grounding — production-ready.</p>
+          </div>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {CAPABILITIES.map(({ icon: Icon, title, desc }) => (
+              <div key={title} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-lg">
+                <div className="grid h-11 w-11 place-items-center rounded-xl bg-indigo-50 text-brand">
+                  <Icon className="h-6 w-6" strokeWidth={1.75} />
+                </div>
+                <h3 className="mt-4 font-semibold text-slate-900">{title}</h3>
+                <p className="mt-1 text-sm text-slate-600">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How it works — the done-for-you service */}
+      <section className="bg-white py-16">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold">How our service works</h2>
+            <p className="mx-auto mt-2 max-w-2xl text-slate-600">
+              You bring the photo, voice and content — we deliver a ready-to-embed digital human. No engineering on your side.
+            </p>
+          </div>
+          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {[
-              { t: "Instant, human-like answers", d: "Voice-first guidance grounded in your real course catalogue — no waiting, no call centre." },
-              { t: "Always consistent", d: "Every learner hears your approved messaging, in 40+ languages, around the clock." },
-              { t: "Embed anywhere", d: "Drop one line of script onto any website and your advisor goes live instantly." },
-            ].map((f) => (
-              <div key={f.t} className="rounded-2xl border border-slate-100 p-6">
-                <h3 className="font-semibold text-brand">{f.t}</h3>
-                <p className="mt-2 text-sm text-slate-600">{f.d}</p>
+              ["1", "Create your avatar", "We build a lifelike avatar from a single photo, webcam capture or short video of your presenter."],
+              ["2", "Clone your voice", "We clone your brand voice (or pick from 40+ languages & presets) so it sounds authentically you."],
+              ["3", "Train on your knowledge", "We add your courses, products or FAQs as a knowledge base (RAG) so answers are accurate and on-brand."],
+              ["4", "Embed on your site", "We hand you a one-line embed snippet. Drop it on any website and your digital human is live 24/7."],
+            ].map(([n, t, d]) => (
+              <div key={n} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:shadow-lg">
+                <div className="grid h-9 w-9 place-items-center rounded-full bg-brand font-bold text-white">{n}</div>
+                <h3 className="mt-4 font-semibold text-slate-900">{t}</h3>
+                <p className="mt-1 text-sm text-slate-600">{d}</p>
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Advisor CTA */}
-      <section id="advisor" className="bg-gradient-to-br from-brand to-indigo-700 py-16 text-white">
-        <div className="mx-auto max-w-3xl px-4 text-center">
-          <h2 className="text-3xl font-bold">Ready to find your course?</h2>
-          <p className="mt-3 text-indigo-100">
-            Ask our AI educator anything — course content, fees, funding, or schedules. It listens and talks back.
+          <p className="mt-8 text-center text-sm text-slate-500">
+            Fully managed — we handle hosting, the AI models and updates. You focus on your customers.
           </p>
-          {demoAvatar && (
-            <a
-              href={`/chat/${demoAvatar.id}`}
-              className="mt-6 inline-block rounded-xl bg-white px-6 py-3 font-medium text-brand hover:bg-indigo-50"
-            >
-              Open full-screen advisor ↗
-            </a>
-          )}
         </div>
       </section>
 
-      <footer className="border-t border-slate-100 py-8 text-center text-sm text-slate-500">
-        <p>© {new Date().getFullYear()} Tertiary Infotech Academy Pte. Ltd. · Digital Human Educator</p>
-        <p className="mt-1">
-          Powered by{" "}
-          <a
-            href="https://www.tertiaryinfotech.com/"
-            target="_blank"
-            rel="noopener"
-            className="text-brand hover:underline"
-          >
-            Tertiary Infotech Academy Pte Ltd
-          </a>
-        </p>
-      </footer>
+      {/* Live demo */}
+      {demoAvatar && (
+        <section id="demo" className="bg-gradient-to-b from-white to-indigo-50/60 py-16">
+          <div className="mx-auto grid max-w-5xl items-center gap-10 px-4 lg:grid-cols-2">
+            <div>
+              <h2 className="text-3xl font-bold">Try it live, right now</h2>
+              <p className="mt-3 text-slate-600">
+                Speak or type to our demo avatar. Ask about courses, fees or schedules — it listens, looks things up,
+                and replies out loud. This is the same widget you can embed on your own site.
+              </p>
+              <a href="#enquire" className="mt-6 inline-block rounded-xl bg-brand px-5 py-3 font-medium text-white hover:bg-brand-600">
+                Want one like this? Book a demo →
+              </a>
+            </div>
+            <div className="mx-auto w-full max-w-sm">
+              <ChatWidget avatarId={demoAvatar.id} name={demoAvatar.name} greeting={demoAvatar.greeting} portraitUrl={demoAvatar.portraitUrl ?? undefined} compact />
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Enquiry / lead magnet */}
+      <section id="enquire" className="bg-slate-900 py-16">
+        <div className="mx-auto grid max-w-5xl items-center gap-10 px-4 lg:grid-cols-2">
+          <div className="text-white">
+            <h2 className="text-3xl font-bold">See your own digital human in action</h2>
+            <p className="mt-3 text-indigo-100">
+              Book a free, no-obligation demo. We&apos;ll show a lifelike AI avatar tailored to your industry — customer
+              service, sales or presenting — and answer your questions.
+            </p>
+            <ul className="mt-6 space-y-2 text-sm text-indigo-100">
+              <li>✓ Personalised to your use case</li>
+              <li>✓ Multilingual &amp; voice-enabled</li>
+              <li>✓ We reply within 3 business days</li>
+            </ul>
+          </div>
+          <LeadForm />
+        </div>
+      </section>
+
+      <SiteFooter />
     </div>
   );
 }

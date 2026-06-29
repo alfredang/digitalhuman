@@ -6,14 +6,14 @@ import { prisma } from "@/lib/db";
 export const dynamic = "force-dynamic";
 
 const patchSchema = z.object({
-  name: z.string().min(1).optional(),
-  persona: z.string().optional(),
-  greeting: z.string().optional(),
-  portraitUrl: z.string().optional(),
-  voiceId: z.string().optional(),
-  language: z.string().optional(),
+  name: z.string().min(1).max(200).optional(),
+  persona: z.string().max(10000).optional(),
+  greeting: z.string().max(2000).optional(),
+  portraitUrl: z.string().max(2000).optional(),
+  voiceId: z.string().max(200).optional(),
+  language: z.string().max(60).optional(),
   status: z.enum(["DRAFT", "READY"]).optional(),
-  knowledge: z.array(z.object({ title: z.string(), content: z.string() })).optional(),
+  knowledge: z.array(z.object({ title: z.string().max(300), content: z.string().max(50000) })).max(200).optional(),
 });
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {

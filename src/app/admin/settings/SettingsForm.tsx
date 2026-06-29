@@ -16,6 +16,12 @@ const FIELDS: { key: string; label: string; hint?: string }[] = [
   { key: "GEMINI_BASE_URL", label: "Gemini Base URL" },
   { key: "INFERENCE_SH_TOKEN", label: "inference.sh Token", hint: "For avatar lip-sync rendering (optional)." },
   { key: "AVATAR_RENDERER_APP", label: "Avatar renderer app", hint: "e.g. bytedance/omnihuman-1-5" },
+  { key: "LEAD_NOTIFY_EMAIL", label: "Lead notification email", hint: "Where demo enquiries are emailed." },
+  { key: "SMTP_HOST", label: "SMTP Host", hint: "e.g. smtp.gmail.com — enables lead emails." },
+  { key: "SMTP_PORT", label: "SMTP Port", hint: "587 (TLS) or 465 (SSL)" },
+  { key: "SMTP_USER", label: "SMTP User" },
+  { key: "SMTP_PASS", label: "SMTP Password / App Password" },
+  { key: "SMTP_FROM", label: "SMTP From address", hint: "Defaults to SMTP User." },
 ];
 
 export default function SettingsForm({ initial }: { initial: Settings }) {
