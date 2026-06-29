@@ -26,7 +26,7 @@ const NETWORK = [
   { name: "Tertiary Workplace Learning", href: "https://workplacelearning.tertiaryinfotech.com" },
   { name: "Tertiary LMS / TMS", href: "https://lms-tms.tertiaryinfotech.com" },
   { name: "Tertiary Kids (AI4Kids)", href: "https://ai4kids.tertiarycourses.com.sg" },
-  { name: "Tertiary IoT", href: "https://iot.tertiaryinfotech.com" },
+  { name: "Tertiary PEI", href: "https://www.tertiaryinfotech.edu.sg" },
   { name: "Tertiary Exams", href: "https://exams.tertiaryinfotech.com" },
   { name: "Tertiary HRMS", href: "https://hrms.tertiaryinfotech.com" },
   { name: "SSG API Portal", href: "https://ssgapi.tertiaryinfotech.com" },
