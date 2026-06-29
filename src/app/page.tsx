@@ -110,6 +110,17 @@ export default async function Home() {
                 <span key={t} className="rounded-full bg-indigo-50 px-3 py-1.5 text-xs font-medium text-brand ring-1 ring-indigo-100">{t}</span>
               ))}
             </div>
+
+            {/* Try it live — sits below 'Use it for', pointing right to the avatar */}
+            {demoAvatar && (
+              <div id="demo" className="mt-7 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
+                <h2 className="text-base font-bold text-slate-900">Try it live, right now →</h2>
+                <p className="mt-1 text-sm text-slate-600">
+                  Speak or type to the demo avatar — it listens, looks things up, and replies out loud. The same widget
+                  you can embed on your own site.
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="lg:pl-6">
@@ -127,24 +138,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      {/* Try it live band (points up to the hero avatar) */}
-      {demoAvatar && (
-        <section id="demo" className="border-y border-slate-100 bg-white">
-          <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-8 text-center md:flex-row md:justify-between md:text-left">
-            <div>
-              <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Try it live, right now ↑</h2>
-              <p className="mt-1 max-w-2xl text-sm text-slate-600">
-                Speak or type to the demo avatar above — it listens, looks things up in its knowledge base, and replies
-                out loud. This is the same widget you can embed on your own site.
-              </p>
-            </div>
-            <a href="#enquire" className="shrink-0 rounded-xl bg-brand px-5 py-3 font-medium text-white hover:bg-brand-600">
-              Want one like this? Book a demo →
-            </a>
-          </div>
-        </section>
-      )}
 
       {/* Industries */}
       <section id="industries" className="bg-white py-12">
