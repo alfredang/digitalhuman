@@ -108,6 +108,24 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* Try it live band (points up to the hero avatar) */}
+      {demoAvatar && (
+        <section id="demo" className="border-y border-slate-100 bg-white">
+          <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-8 text-center md:flex-row md:justify-between md:text-left">
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 sm:text-2xl">Try it live, right now ↑</h2>
+              <p className="mt-1 max-w-2xl text-sm text-slate-600">
+                Speak or type to the demo avatar above — it listens, looks things up in its knowledge base, and replies
+                out loud. This is the same widget you can embed on your own site.
+              </p>
+            </div>
+            <a href="#enquire" className="shrink-0 rounded-xl bg-brand px-5 py-3 font-medium text-white hover:bg-brand-600">
+              Want one like this? Book a demo →
+            </a>
+          </div>
+        </section>
+      )}
+
       {/* Industries */}
       <section id="industries" className="bg-white py-16">
         <div className="mx-auto max-w-6xl px-4">
@@ -180,27 +198,6 @@ export default async function Home() {
           </p>
         </div>
       </section>
-
-      {/* Live demo */}
-      {demoAvatar && (
-        <section id="demo" className="bg-gradient-to-b from-white to-indigo-50/60 py-16">
-          <div className="mx-auto grid max-w-5xl items-center gap-10 px-4 lg:grid-cols-2">
-            <div>
-              <h2 className="text-3xl font-bold">Try it live, right now</h2>
-              <p className="mt-3 text-slate-600">
-                Speak or type to our demo avatar. Ask about courses, fees or schedules — it listens, looks things up,
-                and replies out loud. This is the same widget you can embed on your own site.
-              </p>
-              <a href="#enquire" className="mt-6 inline-block rounded-xl bg-brand px-5 py-3 font-medium text-white hover:bg-brand-600">
-                Want one like this? Book a demo →
-              </a>
-            </div>
-            <div className="mx-auto w-full max-w-sm">
-              <ChatWidget avatarId={demoAvatar.id} name={demoAvatar.name} greeting={demoAvatar.greeting} portraitUrl={demoAvatar.portraitUrl ?? undefined} compact />
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Enquiry / lead magnet */}
       <section id="enquire" className="bg-slate-900 py-16">
