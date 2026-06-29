@@ -1,0 +1,112 @@
+// Digital Human Educator — data model
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum SourceType {
+  PHOTO
+  VIDEO
+}
+
+enum AvatarStatus {
+  DRAFT
+  READY
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  role         Role     @default(USER)
+  avatars      Avatar[]
+  createdAt    DateTime @default(now())
+}
+
+model Avatar {
+  id            String         @id @default(cuid())
+  name          String
+  owner         User           @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId       String
+  sourceType    SourceType     @default(PHOTO)
+  sourceMediaUrl String?
+  portraitUrl   String?
+  voiceId       String?        // MiniMax cloned voice id (or preset voice)
+  persona       String         @default("You are a friendly, knowledgeable training course educator.")
+  greeting      String         @default("Hi! I'm your course advisor. How can I help you today?")
+  status        AvatarStatus   @default(DRAFT)
+  embedKey      String         @unique @default(cuid())
+  knowledge     KnowledgeDoc[]
+  conversations Conversation[]
+  createdAt     DateTime       @default(now())
+}
+
+model KnowledgeDoc {
+  id         String   @id @default(cuid())
+  avatar     Avatar   @relation(fields: [avatarId], references: [id], onDelete: Cascade)
+  avatarId   String
+  title      String
+  content    String
+  chunkIndex Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  @@index([avatarId])
+}
+
+model Conversation {
+  id        String    @id @default(cuid())
+  avatar    Avatar    @relation(fields: [avatarId], references: [id], onDelete: Cascade)
+  avatarId  String
+  visitorId String?
+  messages  Message[]
+  createdAt DateTime  @default(now())
+
+  @@index([avatarId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId String
+  role           MessageRole
+  text           String
+  audioUrl       String?
+  videoUrl       String?
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId])
+}
+
+// Encrypted app settings (API keys, model ids, base urls) — admin editable
+model Setting {
+  key            String   @id
+  valueEncrypted String
+  updatedAt      DateTime @updatedAt
+}
+
+model RenderJob {
+  id        String   @id @default(cuid())
+  type      String // "voice-clone" | "talking-clip"
+  status    String   @default("pending") // pending | running | done | error
+  payload   String // JSON
+  resultUrl String?
+  error     String?
+  createdAt DateTime @default(now())
+}
