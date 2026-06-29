@@ -6,7 +6,7 @@ export const DEFAULT_PAGES: { slug: string; title: string; content: string }[] =
     slug: "about",
     title: "About Us",
     content: `
-      <p>Tertiary Training is the digital-human service from <strong>Tertiary Infotech Academy Pte Ltd</strong> (UEN 201200606W), a Singapore-based technology and training company.</p>
+      <p>Tertiary Training is the digital-human service from <strong>Tertiary Infotech Academy Pte Ltd</strong> (UEN 201200696W), a Singapore-based technology and training company.</p>
       <p>We build, host and deliver lifelike AI digital humans for businesses — voice-enabled avatars that handle customer service, sales and presenting on your website, 24/7, in 40+ languages.</p>
       <h2>What we do</h2>
       <p>It's a fully managed, done-for-you service. We create your branded avatar, clone your brand voice, train it on your own content (RAG), and hand you a one-line embed snippet for any website. You focus on your customers; we handle the AI, hosting and updates.</p>
@@ -29,7 +29,7 @@ export const DEFAULT_PAGES: { slug: string; title: string; content: string }[] =
         <li>Phone: <a href="tel:+6561000613">+65 6100 0613</a></li>
         <li>WhatsApp: <a href="https://wa.me/6588666375">+65 8866 6375</a></li>
         <li>Email: <a href="mailto:enquiry@tertiaryinfotech.com">enquiry@tertiaryinfotech.com</a></li>
-        <li>UEN: 201200606W</li>
+        <li>UEN: 201200696W</li>
       </ul>`,
   },
   {

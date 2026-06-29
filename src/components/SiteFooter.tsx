@@ -107,7 +107,7 @@ export default function SiteFooter() {
         <div>
           <h4 className="text-sm font-semibold uppercase tracking-wide text-white">Contact</h4>
           <p className="mt-4 text-sm font-medium text-slate-300">Tertiary Infotech Academy Pte Ltd</p>
-          <p className="text-xs text-slate-500">UEN: 201200606W</p>
+          <p className="text-xs text-slate-500">UEN: 201200696W</p>
           <ul className="mt-3 space-y-3 text-sm text-slate-400">
             <li className="flex gap-3">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-indigo-400" strokeWidth={1.75} />
@@ -129,13 +129,7 @@ export default function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-slate-800 py-6 text-center text-sm text-slate-500">
-        <p>© {new Date().getFullYear()} Tertiary Infotech Academy Pte Ltd. All rights reserved.</p>
-        <p className="mt-1">
-          Powered by{" "}
-          <a href="https://www.tertiaryinfotech.com/" target="_blank" rel="noopener" className="text-indigo-400 hover:underline">
-            Tertiary Infotech Academy Pte Ltd
-          </a>
-        </p>
+        <p>© {new Date().getFullYear()} Tertiary Infotech Academy Pte Ltd. All rights reserved. · UEN: 201200696W</p>
       </div>
     </footer>
   );
