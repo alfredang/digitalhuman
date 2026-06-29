@@ -159,6 +159,10 @@ export async function getPage(slug: string) {
   await ensurePages();
   return prisma.page.findUnique({ where: { slug } });
 }
+export async function listPages() {
+  await ensurePages();
+  return prisma.page.findMany({ orderBy: { slug: "asc" } });
+}
 export async function listPosts() {
   await ensurePosts();
   return prisma.post.findMany({ where: { published: true }, orderBy: { createdAt: "desc" } });
