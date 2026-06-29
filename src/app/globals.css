@@ -16,11 +16,26 @@
   --font-mono: var(--font-geist-mono);
 }
 
+html {
+  scroll-behavior: smooth;
+  /* offset anchor targets so the sticky header doesn't cover section titles */
+  scroll-padding-top: 5rem;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, Arial, Helvetica, sans-serif;
 }
+
+/* CMS / article typography (scoped — won't affect embedded components) */
+.cms-content { color: #334155; line-height: 1.7; }
+.cms-content p { margin: 0 0 1rem; }
+.cms-content h2 { margin: 1.75rem 0 0.5rem; font-size: 1.25rem; font-weight: 700; color: #0f172a; }
+.cms-content ul { margin: 0 0 1rem 1.25rem; list-style: disc; }
+.cms-content li { margin: 0.25rem 0; }
+.cms-content a { color: var(--brand); }
+.cms-content a:hover { text-decoration: underline; }
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }

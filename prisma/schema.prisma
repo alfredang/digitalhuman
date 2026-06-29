@@ -102,6 +102,29 @@ model Setting {
   updatedAt      DateTime @updatedAt
 }
 
+// Editable CMS pages (About, Contact, Privacy, Terms) — managed in /admin/pages
+model Page {
+  slug      String   @id // about | contact | privacy | terms
+  title     String
+  content   String // HTML, authored by admin
+  updatedAt DateTime @updatedAt
+}
+
+// Blog posts (each acts as a lead magnet with an enquiry CTA)
+model Post {
+  slug      String   @id
+  title     String
+  excerpt   String
+  content   String // HTML, authored by admin
+  industry  String? // e.g. Education, Retail
+  coverImage String?
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([published, createdAt])
+}
+
 // Lead-magnet enquiries (e.g. "Request a Digital Human Demo")
 model Lead {
   id        String   @id @default(cuid())

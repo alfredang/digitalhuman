@@ -1,12 +1,13 @@
 import Link from "next/link";
 import {
   GraduationCap, ShoppingBag, Landmark, HeartPulse, Hotel, Building2, Home as HomeIcon, RadioTower,
-  Mic, Video, Languages, BrainCircuit, Code2, Camera, type LucideIcon,
+  Mic, Video, Languages, BrainCircuit, Code2, Camera, CheckCircle2, type LucideIcon,
 } from "lucide-react";
 import { prisma } from "@/lib/db";
 import ChatWidget from "@/components/ChatWidget";
 import LeadForm from "@/components/LeadForm";
 import SiteFooter from "@/components/SiteFooter";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
 
 export const dynamic = "force-dynamic";
 
@@ -38,11 +39,15 @@ export default async function Home() {
       {/* Nav */}
       <header className="sticky top-0 z-20 border-b border-slate-100 bg-white/85 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <span className="font-bold">Tertiary<span className="text-brand">Training</span></span>
+          <a href="#" className="flex items-center gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/tertiary-logo.png" alt="Tertiary Training" className="h-8 w-8" />
+            <span className="font-bold">Tertiary<span className="text-brand">Training</span></span>
+          </a>
           <nav className="flex items-center gap-4 text-sm">
             <a href="#industries" className="hidden hover:text-brand sm:inline">Industries</a>
             <a href="#capabilities" className="hidden hover:text-brand sm:inline">Features</a>
-            <a href="#demo" className="hidden hover:text-brand sm:inline">Live demo</a>
+            <Link href="/blog" className="hidden hover:text-brand sm:inline">Blog</Link>
             <Link href="/login" className="hidden text-slate-500 hover:text-brand sm:inline">Admin</Link>
             <a href="#enquire" className="rounded-lg bg-brand px-3 py-1.5 font-medium text-white hover:bg-brand-600">Book a demo</a>
           </nav>
@@ -77,17 +82,32 @@ export default async function Home() {
             </div>
             <div className="mt-8 grid max-w-md grid-cols-3 gap-4">
               {[["40+", "languages"], ["24/7", "availability"], ["1-line", "to embed"]].map(([n, l]) => (
-                <div key={l} className="rounded-xl bg-white p-3 text-center shadow-sm ring-1 ring-slate-100">
-                  <span className="block text-xl font-bold text-slate-900">{n}</span>
+                <div key={l} className="rounded-xl bg-white p-3 text-center shadow-sm ring-1 ring-slate-200">
+                  <span className="block text-xl font-bold text-brand">{n}</span>
                   <span className="text-xs text-slate-500">{l}</span>
                 </div>
               ))}
             </div>
-            {/* fills the space under the hero text */}
-            <p className="mt-8 text-xs font-medium uppercase tracking-wide text-slate-400">Use it for</p>
+
+            {/* What's included — fills the space beside the tall avatar */}
+            <ul className="mt-7 grid gap-2.5 sm:grid-cols-2">
+              {[
+                "Fully managed — we build & host it",
+                "Your branded avatar & cloned voice",
+                "Trained on your content (RAG)",
+                "One-line embed for any website",
+              ].map((b) => (
+                <li key={b} className="flex items-start gap-2 text-sm text-slate-700">
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-green-600" strokeWidth={2} />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+
+            <p className="mt-7 text-sm font-semibold text-slate-700">Use it for</p>
             <div className="mt-2 flex flex-wrap gap-2">
               {["Customer service", "Sales & lead-gen", "Onboarding", "Training", "Reception / kiosk", "Product demos"].map((t) => (
-                <span key={t} className="rounded-full bg-white px-3 py-1 text-xs text-slate-600 ring-1 ring-slate-200">{t}</span>
+                <span key={t} className="rounded-full bg-indigo-50 px-3 py-1.5 text-xs font-medium text-brand ring-1 ring-indigo-100">{t}</span>
               ))}
             </div>
           </div>
@@ -127,7 +147,7 @@ export default async function Home() {
       )}
 
       {/* Industries */}
-      <section id="industries" className="bg-white py-16">
+      <section id="industries" className="bg-white py-12">
         <div className="mx-auto max-w-6xl px-4">
           <div className="text-center">
             <h2 className="text-3xl font-bold">One avatar platform, every industry</h2>
@@ -150,7 +170,7 @@ export default async function Home() {
       </section>
 
       {/* Capabilities */}
-      <section id="capabilities" className="bg-slate-50 py-16">
+      <section id="capabilities" className="bg-slate-50 py-12">
         <div className="mx-auto max-w-6xl px-4">
           <div className="text-center">
             <h2 className="text-3xl font-bold">Everything you need for a lifelike presenter</h2>
@@ -171,7 +191,7 @@ export default async function Home() {
       </section>
 
       {/* How it works — the done-for-you service */}
-      <section className="bg-white py-16">
+      <section className="bg-white py-12">
         <div className="mx-auto max-w-6xl px-4">
           <div className="text-center">
             <h2 className="text-3xl font-bold">How our service works</h2>
@@ -200,7 +220,7 @@ export default async function Home() {
       </section>
 
       {/* Enquiry / lead magnet */}
-      <section id="enquire" className="bg-slate-900 py-16">
+      <section id="enquire" className="bg-slate-900 py-12">
         <div className="mx-auto grid max-w-5xl items-center gap-10 px-4 lg:grid-cols-2">
           <div className="text-white">
             <h2 className="text-3xl font-bold">See your own digital human in action</h2>
@@ -219,6 +239,7 @@ export default async function Home() {
       </section>
 
       <SiteFooter />
+      <WhatsAppWidget />
     </div>
   );
 }
