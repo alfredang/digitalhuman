@@ -28,15 +28,26 @@ export default function AvatarActions({
   const [scriptText, setScriptText] = useState("");
   const [ingestMsg, setIngestMsg] = useState("");
 
+  // Upload a document (PDF/DOCX/CSV/TXT) — server extracts, chunks, embeds.
   async function onScriptFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (!scriptTitle) setScriptTitle(file.name.replace(/\.[^.]+$/, ""));
-    setScriptText(await file.text());
+    setIngestMsg(`Uploading & embedding “${file.name}”…`);
+    const fd = new FormData();
+    fd.append("file", file);
+    if (scriptTitle) fd.append("title", scriptTitle);
+    const res = await fetch(`/api/avatars/${id}/ingest-file`, { method: "POST", body: fd });
+    const d = await res.json();
+    e.target.value = "";
+    if (d.ok) {
+      setIngestMsg(`✓ ${d.file}: ${d.chunks} chunk(s), ${d.embedded} embedded into the vector store.`);
+      router.refresh();
+    } else setIngestMsg(`✗ ${d.error || "Failed"}`);
   }
 
+  // Paste raw text → chunk + embed.
   async function ingestScript() {
-    if (!scriptText.trim()) return setIngestMsg("Paste or upload a script first.");
+    if (!scriptText.trim()) return setIngestMsg("Paste text or upload a file first.");
     setIngestMsg("Ingesting & embedding…");
     const res = await fetch(`/api/avatars/${id}/knowledge`, {
       method: "POST",
@@ -162,17 +173,25 @@ export default function AvatarActions({
       </div>
 
       <div>
-        <label className="text-sm font-medium text-slate-700">Train on a script / document (RAG)</label>
-        <p className="text-xs text-slate-500">Upload or paste text — it&apos;s chunked and embedded into the built-in vector store.</p>
+        <label className="text-sm font-medium text-slate-700">Train on documents (RAG)</label>
+        <p className="text-xs text-slate-500">
+          Upload a <strong>PDF, DOCX, CSV or TXT</strong> (or paste text) — the system auto-extracts, chunks, embeds and
+          reranks it in the built-in vector store.
+        </p>
         <div className="mt-2 space-y-2">
           <div className="flex flex-wrap items-center gap-2">
             <input
               value={scriptTitle}
               onChange={(e) => setScriptTitle(e.target.value)}
-              placeholder="Title (e.g. Course catalogue)"
+              placeholder="Optional title (defaults to file name)"
               className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm"
             />
-            <input type="file" accept=".txt,.md,.csv,text/*" onChange={onScriptFile} className="text-sm" />
+            <input
+              type="file"
+              accept=".pdf,.docx,.csv,.txt,.md,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/*"
+              onChange={onScriptFile}
+              className="text-sm"
+            />
           </div>
           <textarea
             value={scriptText}

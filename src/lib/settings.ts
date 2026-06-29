@@ -41,7 +41,7 @@ const DEFAULTS: Partial<Record<SettingKey, string>> = {
   MINIMAX_EMBED_MODEL: "embo-01",
   GEMINI_BASE_URL: "https://generativelanguage.googleapis.com/v1beta/openai",
   GEMINI_CHAT_MODEL: "gemini-2.0-flash",
-  GEMINI_EMBED_MODEL: "text-embedding-004",
+  GEMINI_EMBED_MODEL: "gemini-embedding-001",
   EMBED_PROVIDER: "gemini",
   AVATAR_RENDERER_APP: "bytedance/omnihuman-1-5",
   SMTP_PORT: "587",

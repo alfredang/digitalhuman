@@ -37,7 +37,8 @@ export async function retrieveKnowledge(avatarId: string, query: string, topK = 
   if (withVectors.length > 0) {
     const qVec = await embedOne(query, "query");
     if (qVec) {
-      const ranked = withVectors
+      // 1) Semantic recall: rank all chunks by cosine, take a wider candidate set.
+      const candidates = withVectors
         .map((d) => {
           let vec: number[] = [];
           try {
@@ -45,13 +46,26 @@ export async function retrieveKnowledge(avatarId: string, query: string, topK = 
           } catch {
             /* ignore */
           }
-          return { d, score: vec.length ? cosineSim(qVec, vec) : -1 };
+          return { d, cos: vec.length ? cosineSim(qVec, vec) : -1 };
         })
-        .filter((r) => r.score > 0)
+        .filter((r) => r.cos > 0)
+        .sort((a, b) => b.cos - a.cos)
+        .slice(0, Math.max(topK * 3, 12));
+
+      // 2) Rerank: blend semantic similarity with lexical overlap for precision.
+      const qTokens = new Set(tokenize(query));
+      const reranked = candidates
+        .map(({ d, cos }) => {
+          const text = `${d.title} ${d.content}`.toLowerCase();
+          let hits = 0;
+          for (const t of qTokens) if (text.includes(t)) hits++;
+          const lex = qTokens.size ? hits / qTokens.size : 0;
+          return { d, score: 0.75 * cos + 0.25 * lex };
+        })
         .sort((a, b) => b.score - a.score)
         .slice(0, topK)
         .map((r) => ({ title: r.d.title, content: r.d.content }));
-      if (ranked.length) return ranked;
+      if (reranked.length) return reranked;
     }
   }
 
