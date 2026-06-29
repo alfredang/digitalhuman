@@ -23,11 +23,13 @@ const BrandIcon = {
 const NETWORK = [
   { name: "Tertiary Infotech", href: "https://www.tertiaryinfotech.com" },
   { name: "Tertiary Courses", href: "https://www.tertiarycourses.com.sg" },
-  { name: "Tertiary Workplace Learning", href: "https://www.tertiaryinfotech.com" },
-  { name: "Tertiary LMS / TMS", href: "https://www.tertiaryinfotech.com" },
-  { name: "Tertiary Kids", href: "https://www.tertiaryinfotech.com" },
-  { name: "Tertiary IoT", href: "https://www.tertiaryinfotech.com" },
-  { name: "SSG API Portal", href: "https://www.tertiaryinfotech.com" },
+  { name: "Tertiary Workplace Learning", href: "https://workplacelearning.tertiaryinfotech.com" },
+  { name: "Tertiary LMS / TMS", href: "https://lms-tms.tertiaryinfotech.com" },
+  { name: "Tertiary Kids (AI4Kids)", href: "https://ai4kids.tertiarycourses.com.sg" },
+  { name: "Tertiary IoT", href: "https://iot.tertiaryinfotech.com" },
+  { name: "Tertiary Exams", href: "https://exams.tertiaryinfotech.com" },
+  { name: "Tertiary HRMS", href: "https://hrms.tertiaryinfotech.com" },
+  { name: "SSG API Portal", href: "https://ssg-api.tertiaryinfotech.com" },
 ];
 
 const COMPANY = [
@@ -83,7 +85,7 @@ export default function SiteFooter() {
           <ul className="mt-4 space-y-2 text-sm">
             {COMPANY.map((c) => (
               <li key={c.name}>
-                <a href={c.href} target="_blank" rel="noopener" className="text-slate-400 hover:text-white">{c.name}</a>
+                <a href={c.href} className="text-slate-400 hover:text-white">{c.name}</a>
               </li>
             ))}
           </ul>
