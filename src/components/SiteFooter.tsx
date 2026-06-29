@@ -29,7 +29,7 @@ const NETWORK = [
   { name: "Tertiary IoT", href: "https://iot.tertiaryinfotech.com" },
   { name: "Tertiary Exams", href: "https://exams.tertiaryinfotech.com" },
   { name: "Tertiary HRMS", href: "https://hrms.tertiaryinfotech.com" },
-  { name: "SSG API Portal", href: "https://ssg-api.tertiaryinfotech.com" },
+  { name: "SSG API Portal", href: "https://ssgapi.tertiaryinfotech.com" },
 ];
 
 const COMPANY = [
