@@ -113,19 +113,34 @@ export default async function Home() {
 
             {/* Try it live — sits below 'Use it for', pointing right to the avatar */}
             {demoAvatar && (
-              <div id="demo" className="mt-7 rounded-2xl bg-gradient-to-r from-brand to-indigo-600 p-5 text-white shadow-lg ring-1 ring-brand/30">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide">
-                  <span className="relative flex h-2 w-2">
+              <div id="demo" className="mt-8 rounded-3xl bg-gradient-to-br from-brand to-indigo-700 p-6 text-white shadow-xl ring-1 ring-brand/30 sm:p-8">
+                <span className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide">
+                  <span className="relative flex h-2.5 w-2.5">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-300 opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-green-400" />
+                    <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-400" />
                   </span>
                   Live demo
                 </span>
-                <h2 className="mt-2 text-lg font-bold">Try it live, right now →</h2>
-                <p className="mt-1 text-sm text-indigo-100">
+                <h2 className="mt-3 text-2xl font-extrabold leading-snug sm:text-3xl">Try it live, right now →</h2>
+                <p className="mt-2 text-sm text-indigo-100 sm:text-base">
                   Speak or type to the demo avatar — it listens, looks things up, and replies out loud. The same widget
                   you can embed on your own site.
                 </p>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <a
+                    href={`/chat/${demoAvatar.id}`}
+                    target="_blank"
+                    className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 font-semibold text-brand shadow-sm transition hover:bg-indigo-50"
+                  >
+                    💬 Chat with the avatar
+                  </a>
+                  <a
+                    href="#enquire"
+                    className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-5 py-3 font-semibold text-white ring-1 ring-white/40 transition hover:bg-white/20"
+                  >
+                    Book a demo →
+                  </a>
+                </div>
               </div>
             )}
           </div>
