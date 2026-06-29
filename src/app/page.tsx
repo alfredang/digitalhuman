@@ -63,7 +63,7 @@ export default async function Home() {
       <section className="relative overflow-hidden bg-gradient-to-b from-indigo-50/70 to-white">
         <div className="pointer-events-none absolute -top-24 right-0 h-80 w-80 rounded-full bg-indigo-200/40 blur-3xl" />
         <div className="mx-auto grid max-w-6xl items-start gap-10 px-4 pb-12 pt-10 lg:grid-cols-2">
-          <div className="lg:pt-8">
+          <div className="min-w-0 lg:pt-8">
             <span className="inline-block rounded-full bg-white px-3 py-1 text-xs font-medium text-brand ring-1 ring-indigo-100">
               Enterprise AI Digital Humans · Powered by MiniMax M3 or Google Gemini
             </span>
@@ -116,15 +116,16 @@ export default async function Home() {
               ))}
             </div>
 
-            {/* Try it live — sits below 'Use it for', pointing right to the avatar */}
-            {demoAvatar && (
+            {/* Try it live — always shown when an avatar exists; the badge + chat target
+                adapt when the demo is switched off so it stays an honest teaser. */}
+            {readyAvatar && (
               <div id="demo" className="mt-8 rounded-3xl bg-gradient-to-br from-brand to-indigo-700 p-6 text-white shadow-xl ring-1 ring-brand/30 sm:p-8">
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide">
                   <span className="relative flex h-2.5 w-2.5">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-300 opacity-75" />
-                    <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-400" />
+                    {demoEnabled && <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-300 opacity-75" />}
+                    <span className={`relative inline-flex h-2.5 w-2.5 rounded-full ${demoEnabled ? "bg-green-400" : "bg-amber-300"}`} />
                   </span>
-                  Live demo
+                  {demoEnabled ? "Live demo" : "Interactive demo"}
                 </span>
                 <h2 className="mt-3 text-2xl font-extrabold leading-snug sm:text-3xl">Try it live, right now →</h2>
                 <p className="mt-2 text-sm text-indigo-100 sm:text-base">
@@ -133,7 +134,7 @@ export default async function Home() {
                 </p>
                 <div className="mt-5 flex flex-wrap gap-3">
                   <a
-                    href={`/chat/${demoAvatar.id}`}
+                    href={`/chat/${readyAvatar.id}`}
                     target="_blank"
                     className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 font-semibold text-brand shadow-sm transition hover:bg-indigo-50"
                   >
@@ -150,7 +151,7 @@ export default async function Home() {
             )}
           </div>
 
-          <div className="lg:pl-6">
+          <div className="min-w-0 lg:pl-6">
             {readyAvatar ? (
               // Always show the avatar. When the demo is switched off (DEMO_ENABLED=false),
               // the widget renders read-only: sending text or using voice replies with a
