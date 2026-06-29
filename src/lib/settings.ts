@@ -16,6 +16,9 @@ export const SETTING_KEYS = {
   GEMINI_API_KEY: "GEMINI_API_KEY",
   GEMINI_BASE_URL: "GEMINI_BASE_URL",
   GEMINI_CHAT_MODEL: "GEMINI_CHAT_MODEL",
+  GEMINI_EMBED_MODEL: "GEMINI_EMBED_MODEL",
+  // Embeddings provider for the built-in vector store: "gemini" | "minimax"
+  EMBED_PROVIDER: "EMBED_PROVIDER",
   // Avatar lip-sync
   INFERENCE_SH_TOKEN: "INFERENCE_SH_TOKEN",
   AVATAR_RENDERER_APP: "AVATAR_RENDERER_APP", // inference.sh app id
@@ -38,6 +41,8 @@ const DEFAULTS: Partial<Record<SettingKey, string>> = {
   MINIMAX_EMBED_MODEL: "embo-01",
   GEMINI_BASE_URL: "https://generativelanguage.googleapis.com/v1beta/openai",
   GEMINI_CHAT_MODEL: "gemini-2.0-flash",
+  GEMINI_EMBED_MODEL: "text-embedding-004",
+  EMBED_PROVIDER: "gemini",
   AVATAR_RENDERER_APP: "bytedance/omnihuman-1-5",
   SMTP_PORT: "587",
   LEAD_NOTIFY_EMAIL: "angch@tertiaryinfotech.com",
