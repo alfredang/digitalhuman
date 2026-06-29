@@ -20,10 +20,10 @@ export default function WhatsAppWidget() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-5 left-5 z-50 flex flex-col items-start gap-3">
+    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
       {open && (
         <div className="w-[min(20rem,calc(100vw-2.5rem))] overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-slate-200">
-          <div className="flex items-center gap-2 bg-[#25D366] px-4 py-3 text-white">
+          <div className="flex items-center gap-2 bg-[#128C7E] px-4 py-3 text-white">
             <MessageCircle className="h-5 w-5" />
             <div className="leading-tight">
               <p className="text-sm font-semibold">Chat with us on WhatsApp</p>
@@ -38,7 +38,7 @@ export default function WhatsAppWidget() {
                 href={waLink(q)}
                 target="_blank"
                 rel="noopener"
-                className="block rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 transition hover:border-[#25D366] hover:bg-green-50"
+                className="block rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 transition hover:border-[#128C7E] hover:bg-green-50"
               >
                 {q}
               </a>
@@ -47,7 +47,7 @@ export default function WhatsAppWidget() {
               href={waLink("Hi! I'm interested in your AI digital human service.")}
               target="_blank"
               rel="noopener"
-              className="mt-1 block rounded-xl bg-[#25D366] px-3 py-2 text-center text-sm font-semibold text-white hover:bg-[#1ebe5a]"
+              className="mt-1 block rounded-xl bg-[#128C7E] px-3 py-2 text-center text-sm font-semibold text-white hover:bg-[#0b6b5f]"
             >
               Open WhatsApp chat →
             </a>
@@ -59,7 +59,7 @@ export default function WhatsAppWidget() {
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close WhatsApp chat" : "Chat with us on WhatsApp"}
         aria-expanded={open}
-        className="grid h-14 w-14 place-items-center rounded-full bg-[#25D366] text-white shadow-xl transition hover:scale-105 hover:bg-[#1ebe5a]"
+        className="grid h-14 w-14 place-items-center rounded-full bg-[#128C7E] text-white shadow-xl transition hover:scale-105 hover:bg-[#0b6b5f]"
       >
         {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-7 w-7" />}
       </button>
