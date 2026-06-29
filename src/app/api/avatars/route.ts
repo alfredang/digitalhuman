@@ -10,6 +10,8 @@ const createSchema = z.object({
   sourceType: z.enum(["PHOTO", "VIDEO"]).default("PHOTO"),
   sourceMediaUrl: z.string().optional(),
   portraitUrl: z.string().optional(),
+  voiceId: z.string().optional(),
+  language: z.string().optional(),
   persona: z.string().optional(),
   greeting: z.string().optional(),
   knowledge: z.array(z.object({ title: z.string(), content: z.string() })).optional(),

@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tertiary Infotech — AI Digital Human Educator",
+  title: "Tertiary Training — AI Digital Human Educator",
   description:
-    "Talk to a lifelike AI course educator. WSQ & professional training from Tertiary Infotech, powered by MiniMax M3.",
+    "Talk to a lifelike AI course educator. WSQ & professional training from Tertiary Training, powered by MiniMax M3.",
 };
 
 export default function RootLayout({

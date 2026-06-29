@@ -19,7 +19,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (!avatar) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   try {
-    const audioUrl = await synthesize(parsed.data.text, { voiceId: avatar.voiceId ?? undefined });
+    const audioUrl = await synthesize(parsed.data.text, {
+      voiceId: avatar.voiceId ?? undefined,
+      language: avatar.language,
+    });
     return NextResponse.json({ ok: true, audioUrl });
   } catch (e) {
     return NextResponse.json({ ok: false, error: (e as Error).message }, { status: 502 });

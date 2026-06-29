@@ -11,6 +11,7 @@ const patchSchema = z.object({
   greeting: z.string().optional(),
   portraitUrl: z.string().optional(),
   voiceId: z.string().optional(),
+  language: z.string().optional(),
   status: z.enum(["DRAFT", "READY"]).optional(),
   knowledge: z.array(z.object({ title: z.string(), content: z.string() })).optional(),
 });

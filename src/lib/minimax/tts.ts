@@ -13,15 +13,22 @@ async function ttsConfig() {
   return { apiKey, groupId, baseUrl, model };
 }
 
+// Only the China endpoint (api.minimaxi.com) uses the GroupId query param.
+// The international endpoint (api.minimax.io) authenticates by Bearer token
+// alone — passing GroupId there causes "token not match group" (1004).
 function withGroup(url: string, groupId?: string) {
-  return groupId ? `${url}${url.includes("?") ? "&" : "?"}GroupId=${encodeURIComponent(groupId)}` : url;
+  const isChina = /minimaxi\.com/i.test(url);
+  return isChina && groupId ? `${url}${url.includes("?") ? "&" : "?"}GroupId=${encodeURIComponent(groupId)}` : url;
 }
 
 export type SynthOptions = {
   voiceId?: string; // cloned or preset voice
   speed?: number;
   emotion?: string; // e.g. "happy" | "neutral"
+  language?: string; // language_boost, e.g. "English"
 };
+
+const DEFAULT_VOICE_ID = "female-tianmei";
 
 /**
  * Synthesize speech and persist it. Returns a public audio URL.
@@ -35,8 +42,9 @@ export async function synthesize(text: string, opts: SynthOptions = {}): Promise
       model,
       text,
       stream: false,
+      ...(opts.language && opts.language !== "auto" ? { language_boost: opts.language } : {}),
       voice_setting: {
-        voice_id: opts.voiceId || "male-qn-qingse",
+        voice_id: opts.voiceId || DEFAULT_VOICE_ID,
         speed: opts.speed ?? 1.0,
         vol: 1.0,
         pitch: 0,

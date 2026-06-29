@@ -28,12 +28,24 @@ export type ChatResult = {
   toolCalls: ToolCall[];
 };
 
-async function minimaxConfig() {
+// Resolve the active LLM provider config. Both MiniMax and Gemini expose an
+// OpenAI-compatible /chat/completions endpoint, so one code path serves both.
+async function llmConfig() {
+  const provider = ((await getSetting("LLM_PROVIDER")) || "minimax").toLowerCase();
+
+  if (provider === "gemini") {
+    const apiKey = await getSetting("GEMINI_API_KEY");
+    const baseUrl = (await getSetting("GEMINI_BASE_URL")) || "https://generativelanguage.googleapis.com/v1beta/openai";
+    const model = (await getSetting("GEMINI_CHAT_MODEL")) || "gemini-2.0-flash";
+    if (!apiKey) throw new Error("Gemini API key is not configured. Set it in /admin/settings.");
+    return { provider, apiKey, baseUrl: baseUrl.replace(/\/$/, ""), model };
+  }
+
   const apiKey = await getSetting("MINIMAX_API_KEY");
   const baseUrl = (await getSetting("MINIMAX_BASE_URL")) || "https://api.minimax.io/v1";
   const model = (await getSetting("MINIMAX_CHAT_MODEL")) || "MiniMax-M3";
   if (!apiKey) throw new Error("MiniMax API key is not configured. Set it in /admin/settings.");
-  return { apiKey, baseUrl: baseUrl.replace(/\/$/, ""), model };
+  return { provider: "minimax", apiKey, baseUrl: baseUrl.replace(/\/$/, ""), model };
 }
 
 /**
@@ -44,7 +56,7 @@ export async function chatCompletion(
   messages: ChatMessage[],
   opts: { tools?: ToolDef[]; temperature?: number } = {},
 ): Promise<ChatResult> {
-  const { apiKey, baseUrl, model } = await minimaxConfig();
+  const { apiKey, baseUrl, model, provider } = await llmConfig();
   const res = await fetch(`${baseUrl}/chat/completions`, {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
@@ -57,7 +69,7 @@ export async function chatCompletion(
   });
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`MiniMax chat error ${res.status}: ${text.slice(0, 500)}`);
+    throw new Error(`${provider} chat error ${res.status}: ${text.slice(0, 500)}`);
   }
   const data = await res.json();
   const msg = data?.choices?.[0]?.message ?? {};

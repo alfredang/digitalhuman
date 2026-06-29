@@ -3,11 +3,19 @@ import { decrypt, encrypt } from "./crypto";
 
 // Known setting keys + their env fallback variable.
 export const SETTING_KEYS = {
+  // Which LLM powers the dialogue layer: "minimax" | "gemini"
+  LLM_PROVIDER: "LLM_PROVIDER",
+  // MiniMax
   MINIMAX_API_KEY: "MINIMAX_API_KEY",
   MINIMAX_GROUP_ID: "MINIMAX_GROUP_ID",
   MINIMAX_BASE_URL: "MINIMAX_BASE_URL",
   MINIMAX_CHAT_MODEL: "MINIMAX_CHAT_MODEL",
   MINIMAX_TTS_MODEL: "MINIMAX_TTS_MODEL",
+  // Google Gemini (OpenAI-compatible endpoint)
+  GEMINI_API_KEY: "GEMINI_API_KEY",
+  GEMINI_BASE_URL: "GEMINI_BASE_URL",
+  GEMINI_CHAT_MODEL: "GEMINI_CHAT_MODEL",
+  // Avatar lip-sync
   INFERENCE_SH_TOKEN: "INFERENCE_SH_TOKEN",
   AVATAR_RENDERER_APP: "AVATAR_RENDERER_APP", // inference.sh app id
 } as const;
@@ -15,14 +23,17 @@ export const SETTING_KEYS = {
 export type SettingKey = keyof typeof SETTING_KEYS;
 
 const DEFAULTS: Partial<Record<SettingKey, string>> = {
+  LLM_PROVIDER: "minimax",
   MINIMAX_BASE_URL: "https://api.minimax.io/v1",
   MINIMAX_CHAT_MODEL: "MiniMax-M3",
   MINIMAX_TTS_MODEL: "speech-2.8-turbo",
+  GEMINI_BASE_URL: "https://generativelanguage.googleapis.com/v1beta/openai",
+  GEMINI_CHAT_MODEL: "gemini-2.0-flash",
   AVATAR_RENDERER_APP: "bytedance/omnihuman-1-5",
 };
 
 // Keys that are secrets — never returned to the client in plaintext.
-export const SECRET_KEYS: SettingKey[] = ["MINIMAX_API_KEY", "INFERENCE_SH_TOKEN"];
+export const SECRET_KEYS: SettingKey[] = ["MINIMAX_API_KEY", "GEMINI_API_KEY", "INFERENCE_SH_TOKEN"];
 
 /** Get a setting: DB (decrypted) first, then env var, then built-in default. */
 export async function getSetting(key: SettingKey): Promise<string | undefined> {

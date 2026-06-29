@@ -41,7 +41,13 @@ export default async function AvatarDetail({ params }: { params: Promise<{ id: s
             <p className="mt-1 text-sm text-slate-500">{avatar.greeting}</p>
           </div>
 
-          <AvatarActions id={avatar.id} embedKey={avatar.embedKey} hasVoice={!!avatar.voiceId} />
+          <AvatarActions
+            id={avatar.id}
+            embedKey={avatar.embedKey}
+            hasVoice={!!avatar.voiceId}
+            voiceId={avatar.voiceId ?? ""}
+            language={avatar.language}
+          />
 
           <section>
             <h2 className="text-sm font-semibold text-slate-700">Persona</h2>

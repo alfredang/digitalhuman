@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { VOICES, LANGUAGES, DEFAULT_VOICE_ID } from "@/lib/minimax/voices";
 
 type Tab = "upload" | "webcam" | "video";
 
@@ -29,6 +30,8 @@ export default function AvatarStudio() {
   const [sourceType, setSourceType] = useState<"PHOTO" | "VIDEO">("PHOTO");
 
   const [voiceSampleUrl, setVoiceSampleUrl] = useState<string>("");
+  const [voiceId, setVoiceId] = useState<string>(DEFAULT_VOICE_ID);
+  const [language, setLanguage] = useState<string>("English");
   const [knowledge, setKnowledge] = useState<{ title: string; content: string }[]>([]);
 
   const [busy, setBusy] = useState("");
@@ -177,7 +180,7 @@ export default function AvatarStudio() {
       const res = await fetch("/api/avatars", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, persona, greeting, portraitUrl, sourceMediaUrl, sourceType, knowledge }),
+        body: JSON.stringify({ name, persona, greeting, portraitUrl, sourceMediaUrl, sourceType, voiceId, language, knowledge }),
       });
       if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "Failed to create avatar");
       const avatar = await res.json();
@@ -257,8 +260,42 @@ export default function AvatarStudio() {
 
         {/* Voice */}
         <div className="rounded-xl border border-slate-200 bg-white p-4">
-          <p className="text-sm font-medium text-slate-700">Voice (optional — clone from ~10s sample)</p>
-          <div className="mt-3 flex flex-wrap items-center gap-3">
+          <p className="text-sm font-medium text-slate-700">Voice &amp; language</p>
+          <div className="mt-3 grid grid-cols-2 gap-3">
+            <label className="block">
+              <span className="text-xs text-slate-500">Voice</span>
+              <select
+                value={voiceId}
+                onChange={(e) => setVoiceId(e.target.value)}
+                className="mt-1 w-full rounded-lg border border-slate-300 px-2 py-2 text-sm"
+              >
+                <optgroup label="Female">
+                  {VOICES.filter((v) => v.gender === "female").map((v) => (
+                    <option key={v.id} value={v.id}>{v.label}</option>
+                  ))}
+                </optgroup>
+                <optgroup label="Male">
+                  {VOICES.filter((v) => v.gender === "male").map((v) => (
+                    <option key={v.id} value={v.id}>{v.label}</option>
+                  ))}
+                </optgroup>
+              </select>
+            </label>
+            <label className="block">
+              <span className="text-xs text-slate-500">Language</span>
+              <select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                className="mt-1 w-full rounded-lg border border-slate-300 px-2 py-2 text-sm"
+              >
+                {LANGUAGES.map((l) => (
+                  <option key={l} value={l}>{l}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+          <p className="mt-3 text-xs text-slate-500">Or clone a custom voice from a ~10s sample (overrides the preset):</p>
+          <div className="mt-2 flex flex-wrap items-center gap-3">
             {recordingVoice ? (
               <button onClick={stopVoice} className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white">
                 ■ Stop

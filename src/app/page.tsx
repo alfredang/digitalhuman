@@ -25,7 +25,7 @@ export default async function Home() {
       <header className="sticky top-0 z-10 border-b border-slate-100 bg-white/80 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <span className="font-bold">
-            Tertiary<span className="text-brand">Infotech</span>
+            Tertiary<span className="text-brand">Training</span>
           </span>
           <nav className="flex items-center gap-4 text-sm">
             <a href="#courses" className="hover:text-brand">Courses</a>

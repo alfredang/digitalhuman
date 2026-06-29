@@ -49,6 +49,7 @@ model Avatar {
   sourceMediaUrl String?
   portraitUrl   String?
   voiceId       String?        // MiniMax cloned voice id (or preset voice)
+  language      String         @default("English") // TTS language_boost + reply language
   persona       String         @default("You are a friendly, knowledgeable training course educator.")
   greeting      String         @default("Hi! I'm your course advisor. How can I help you today?")
   status        AvatarStatus   @default(DRAFT)

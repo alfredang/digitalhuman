@@ -16,6 +16,15 @@ export type AgentEvent =
 
 const MAX_TOOL_ITERATIONS = 4;
 
+/** Remove chain-of-thought (<think>…</think>) so it is never shown or spoken. */
+function stripThinking(text: string): string {
+  return text
+    .replace(/<think>[\s\S]*?<\/think>/gi, "") // closed blocks
+    .replace(/<think>[\s\S]*/gi, "") // unclosed (streamed) block
+    .replace(/^[\s\S]*?<\/think>/i, "") // stray closing tag with preceding reasoning
+    .trim();
+}
+
 /**
  * The agentic AI loop: ground → reason (with tool calls) → speak → render.
  * Yields events suitable for streaming to the client over SSE.
@@ -39,9 +48,11 @@ export async function* orchestrate(opts: {
           .join("\n")}`
       : "";
 
+    const language = avatar.language || "English";
     const systemPrompt =
       `${avatar.persona}\n\n` +
       `You are a spoken digital-human educator. Keep replies concise and conversational (2-4 sentences) since they will be spoken aloud. ` +
+      `Always reply in ${language}. ` +
       `Use the lookup_course tool for specific course facts. Offer book_consultation when a learner shows strong interest.` +
       groundingBlock;
 
@@ -79,6 +90,7 @@ export async function* orchestrate(opts: {
       }
     }
 
+    finalText = stripThinking(finalText);
     if (!finalText) finalText = "Sorry, I didn't quite catch that. Could you rephrase?";
     yield { type: "text", text: finalText };
 
@@ -86,7 +98,7 @@ export async function* orchestrate(opts: {
     yield { type: "status", stage: "speaking" };
     let audioUrl: string | null = null;
     try {
-      audioUrl = await synthesize(finalText, { voiceId: avatar.voiceId ?? undefined });
+      audioUrl = await synthesize(finalText, { voiceId: avatar.voiceId ?? undefined, language });
       yield { type: "audio", url: audioUrl };
     } catch (e) {
       // Voice is best-effort; the UI can still show the text.

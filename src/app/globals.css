@@ -27,3 +27,19 @@ body {
   50% { transform: translateY(-6px); }
 }
 .animate-float { animation: float 4s ease-in-out infinite; }
+
+/* Subtle "talking" motion used while the avatar's voice is playing. */
+@keyframes talk {
+  0%   { transform: scale(1) translateY(0); }
+  25%  { transform: scale(1.012) translateY(-1px); }
+  50%  { transform: scale(1.004) translateY(0.5px); }
+  75%  { transform: scale(1.015) translateY(-1.5px); }
+  100% { transform: scale(1) translateY(0); }
+}
+.animate-talk { animation: talk 0.42s ease-in-out infinite; transform-origin: center 70%; }
+
+@keyframes talkring {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(79,70,229,0.45); }
+  50% { box-shadow: 0 0 0 10px rgba(79,70,229,0); }
+}
+.talk-ring { animation: talkring 0.9s ease-out infinite; }

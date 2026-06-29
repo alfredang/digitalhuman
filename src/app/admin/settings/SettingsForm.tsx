@@ -7,11 +7,14 @@ type Settings = Record<string, SettingInfo>;
 
 const FIELDS: { key: string; label: string; hint?: string }[] = [
   { key: "MINIMAX_API_KEY", label: "MiniMax API Key", hint: "Used for M3 chat and Speech 2.8 TTS." },
-  { key: "MINIMAX_GROUP_ID", label: "MiniMax Group ID", hint: "Required by some MiniMax TTS endpoints." },
+  { key: "MINIMAX_GROUP_ID", label: "MiniMax Group ID", hint: "The numeric UID from your MiniMax profile (not your email). Needed for TTS." },
   { key: "MINIMAX_BASE_URL", label: "MiniMax Base URL" },
-  { key: "MINIMAX_CHAT_MODEL", label: "Chat model", hint: "e.g. MiniMax-M3" },
+  { key: "MINIMAX_CHAT_MODEL", label: "MiniMax chat model", hint: "e.g. MiniMax-M3" },
   { key: "MINIMAX_TTS_MODEL", label: "TTS model", hint: "e.g. speech-2.8-turbo" },
-  { key: "INFERENCE_SH_TOKEN", label: "inference.sh Token", hint: "For avatar lip-sync rendering." },
+  { key: "GEMINI_API_KEY", label: "Gemini API Key", hint: "Google AI Studio key — used when provider is Gemini." },
+  { key: "GEMINI_CHAT_MODEL", label: "Gemini chat model", hint: "e.g. gemini-2.0-flash" },
+  { key: "GEMINI_BASE_URL", label: "Gemini Base URL" },
+  { key: "INFERENCE_SH_TOKEN", label: "inference.sh Token", hint: "For avatar lip-sync rendering (optional)." },
   { key: "AVATAR_RENDERER_APP", label: "Avatar renderer app", hint: "e.g. bytedance/omnihuman-1-5" },
 ];
 
@@ -19,6 +22,7 @@ export default function SettingsForm({ initial }: { initial: Settings }) {
   const [values, setValues] = useState<Record<string, string>>(() => {
     const v: Record<string, string> = {};
     for (const f of FIELDS) v[f.key] = initial[f.key]?.secret ? "" : initial[f.key]?.value ?? "";
+    v.LLM_PROVIDER = initial.LLM_PROVIDER?.value || "minimax";
     return v;
   });
   const [status, setStatus] = useState("");
@@ -42,14 +46,32 @@ export default function SettingsForm({ initial }: { initial: Settings }) {
     const res = await fetch("/api/admin/test-chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt: "Say hello and confirm you are MiniMax M3." }),
+      body: JSON.stringify({ prompt: "Say hello in one short sentence and name which AI model you are." }),
     });
     const data = await res.json();
     setTestResult(data.ok ? `✓ ${data.reply}` : `✗ ${data.error}`);
   }
 
+  const provider = values.LLM_PROVIDER || "minimax";
+
   return (
     <div className="mt-6 space-y-5 rounded-xl border border-slate-200 bg-white p-6">
+      {/* LLM provider selector */}
+      <label className="block">
+        <span className="text-sm font-medium text-slate-700">AI provider (dialogue)</span>
+        <select
+          value={provider}
+          onChange={(e) => setValues((v) => ({ ...v, LLM_PROVIDER: e.target.value }))}
+          className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+        >
+          <option value="minimax">MiniMax (M3)</option>
+          <option value="gemini">Google Gemini</option>
+        </select>
+        <span className="mt-1 block text-xs text-slate-400">
+          Choose which LLM answers learners. Voice (TTS) uses MiniMax Speech 2.8 when configured, otherwise the browser voice.
+        </span>
+      </label>
+
       {FIELDS.map((f) => {
         const info = initial[f.key];
         const isSecret = info?.secret;
@@ -83,7 +105,7 @@ export default function SettingsForm({ initial }: { initial: Settings }) {
           onClick={testChat}
           className="rounded-lg border border-slate-300 px-4 py-2 text-sm hover:bg-slate-50"
         >
-          Test M3 connection
+          Test AI connection
         </button>
         {status && <span className="text-sm text-slate-600">{status}</span>}
       </div>
