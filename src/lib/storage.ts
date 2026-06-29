@@ -51,7 +51,8 @@ export async function saveBuffer(buf: Buffer, opts: { ext: string; contentType: 
   const full = path.join(LOCAL_DIR, key);
   await fs.mkdir(path.dirname(full), { recursive: true });
   await fs.writeFile(full, buf);
-  return `/uploads/${key}`;
+  // Served via the route handler (Next doesn't serve runtime files under public/).
+  return `/api/uploads/${key}`;
 }
 
 const EXT_BY_TYPE: Record<string, string> = {
