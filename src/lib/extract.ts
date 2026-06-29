@@ -6,10 +6,13 @@ export async function extractText(buf: Buffer, filename: string, contentType?: s
   const ct = (contentType || "").toLowerCase();
 
   if (name.endsWith(".pdf") || ct.includes("pdf")) {
-    const { PDFParse } = await import("pdf-parse");
-    const parser = new PDFParse({ data: new Uint8Array(buf) });
-    const result = await parser.getText();
-    return result.text;
+    // Import the lib entry (not index.js) to skip pdf-parse's debug-mode test-file read;
+    // v1 bundles pdf.js and needs no external worker (works in standalone/serverless).
+    // @ts-expect-error - no type declarations for the subpath
+    const mod = await import("pdf-parse/lib/pdf-parse.js");
+    const pdf = (mod.default ?? mod) as (b: Buffer) => Promise<{ text: string }>;
+    const { text } = await pdf(buf);
+    return text;
   }
 
   if (name.endsWith(".docx") || ct.includes("officedocument.wordprocessingml")) {
