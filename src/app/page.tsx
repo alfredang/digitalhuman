@@ -113,9 +113,16 @@ export default async function Home() {
 
             {/* Try it live — sits below 'Use it for', pointing right to the avatar */}
             {demoAvatar && (
-              <div id="demo" className="mt-7 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
-                <h2 className="text-base font-bold text-slate-900">Try it live, right now →</h2>
-                <p className="mt-1 text-sm text-slate-600">
+              <div id="demo" className="mt-7 rounded-2xl bg-gradient-to-r from-brand to-indigo-600 p-5 text-white shadow-lg ring-1 ring-brand/30">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-300 opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-green-400" />
+                  </span>
+                  Live demo
+                </span>
+                <h2 className="mt-2 text-lg font-bold">Try it live, right now →</h2>
+                <p className="mt-1 text-sm text-indigo-100">
                   Speak or type to the demo avatar — it listens, looks things up, and replies out loud. The same widget
                   you can embed on your own site.
                 </p>
