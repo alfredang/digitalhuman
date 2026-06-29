@@ -5,6 +5,9 @@ import { decrypt, encrypt } from "./crypto";
 export const SETTING_KEYS = {
   // Which LLM powers the dialogue layer: "minimax" | "gemini"
   LLM_PROVIDER: "LLM_PROVIDER",
+  // Show the live avatar demo on the public landing page: "true" | "false".
+  // Off by default so the public page doesn't burn API tokens on spam.
+  DEMO_ENABLED: "DEMO_ENABLED",
   // MiniMax
   MINIMAX_API_KEY: "MINIMAX_API_KEY",
   MINIMAX_GROUP_ID: "MINIMAX_GROUP_ID",
@@ -35,6 +38,7 @@ export type SettingKey = keyof typeof SETTING_KEYS;
 
 const DEFAULTS: Partial<Record<SettingKey, string>> = {
   LLM_PROVIDER: "minimax",
+  DEMO_ENABLED: "false",
   MINIMAX_BASE_URL: "https://api.minimax.io/v1",
   MINIMAX_CHAT_MODEL: "MiniMax-M3",
   MINIMAX_TTS_MODEL: "speech-2.8-turbo",

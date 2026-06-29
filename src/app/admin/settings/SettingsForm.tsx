@@ -31,6 +31,7 @@ export default function SettingsForm({ initial }: { initial: Settings }) {
     const v: Record<string, string> = {};
     for (const f of FIELDS) v[f.key] = initial[f.key]?.secret ? "" : initial[f.key]?.value ?? "";
     v.LLM_PROVIDER = initial.LLM_PROVIDER?.value || "minimax";
+    v.DEMO_ENABLED = initial.DEMO_ENABLED?.value || "false";
     return v;
   });
   const [status, setStatus] = useState("");
@@ -61,9 +62,36 @@ export default function SettingsForm({ initial }: { initial: Settings }) {
   }
 
   const provider = values.LLM_PROVIDER || "minimax";
+  const demoEnabled = values.DEMO_ENABLED === "true";
 
   return (
     <div className="mt-6 space-y-5 rounded-xl border border-slate-200 bg-white p-6">
+      {/* Public landing-page demo toggle */}
+      <div className="flex items-start justify-between gap-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
+        <div>
+          <span className="text-sm font-medium text-slate-700">Live avatar demo on landing page</span>
+          <span className="mt-1 block text-xs text-slate-500">
+            When off, the public homepage hides the interactive avatar and shows a “Book a demo” CTA instead —
+            so visitors can&apos;t spam the chat and consume API tokens. Turn on only when you want a live demo public.
+          </span>
+        </div>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={demoEnabled}
+          onClick={() => setValues((v) => ({ ...v, DEMO_ENABLED: demoEnabled ? "false" : "true" }))}
+          className={`relative mt-0.5 inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors ${
+            demoEnabled ? "bg-brand" : "bg-slate-300"
+          }`}
+        >
+          <span
+            className={`inline-block h-5 w-5 translate-y-0.5 rounded-full bg-white shadow transition-transform ${
+              demoEnabled ? "translate-x-[22px]" : "translate-x-0.5"
+            }`}
+          />
+        </button>
+      </div>
+
       {/* LLM provider selector */}
       <label className="block">
         <span className="text-sm font-medium text-slate-700">AI provider (dialogue)</span>

@@ -4,6 +4,7 @@ import {
   Mic, Video, Languages, BrainCircuit, Code2, Camera, CheckCircle2, type LucideIcon,
 } from "lucide-react";
 import { prisma } from "@/lib/db";
+import { getSetting } from "@/lib/settings";
 import ChatWidget from "@/components/ChatWidget";
 import LeadForm from "@/components/LeadForm";
 import SiteFooter from "@/components/SiteFooter";
@@ -32,7 +33,11 @@ const CAPABILITIES: { icon: LucideIcon; title: string; desc: string }[] = [
 ];
 
 export default async function Home() {
-  const demoAvatar = await prisma.avatar.findFirst({ where: { status: "READY" }, orderBy: { createdAt: "asc" } });
+  const demoEnabled = (await getSetting("DEMO_ENABLED")) === "true";
+  const readyAvatar = await prisma.avatar.findFirst({ where: { status: "READY" }, orderBy: { createdAt: "asc" } });
+  // Only expose the live demo when the admin has explicitly enabled it (keeps the
+  // public page from burning API tokens on spam while the demo is switched off).
+  const demoAvatar = demoEnabled ? readyAvatar : null;
 
   return (
     <div className="bg-white text-slate-800">
@@ -148,6 +153,21 @@ export default async function Home() {
           <div className="lg:pl-6">
             {demoAvatar ? (
               <ChatWidget avatarId={demoAvatar.id} name={demoAvatar.name} greeting={demoAvatar.greeting} portraitUrl={demoAvatar.portraitUrl ?? undefined} compact />
+            ) : readyAvatar ? (
+              // An avatar exists but the live demo is switched off (DEMO_ENABLED=false).
+              // Show a polished CTA instead of the raw widget so the page looks intentional.
+              <div className="grid h-[520px] place-items-center rounded-2xl bg-gradient-to-br from-indigo-50 to-white text-center ring-1 ring-slate-200">
+                <div className="px-8">
+                  <p className="text-5xl">🧑‍🏫</p>
+                  <p className="mt-4 text-lg font-semibold text-slate-900">Live demo available on request</p>
+                  <p className="mt-2 text-sm text-slate-600">
+                    Book a free demo and we&apos;ll show your branded digital human — voice, lip-sync and all.
+                  </p>
+                  <a href="#enquire" className="mt-5 inline-block rounded-xl bg-brand px-5 py-3 font-medium text-white shadow-sm hover:bg-brand-600">
+                    Book a free demo
+                  </a>
+                </div>
+              </div>
             ) : (
               <div className="grid h-[520px] place-items-center rounded-2xl bg-slate-50 text-center ring-1 ring-slate-200">
                 <div className="px-6">
