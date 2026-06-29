@@ -24,6 +24,32 @@ export default function AvatarActions({
   const [audioUrl, setAudioUrl] = useState("");
   const [msg, setMsg] = useState("");
   const [busy, setBusy] = useState(false);
+  const [scriptTitle, setScriptTitle] = useState("");
+  const [scriptText, setScriptText] = useState("");
+  const [ingestMsg, setIngestMsg] = useState("");
+
+  async function onScriptFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!scriptTitle) setScriptTitle(file.name.replace(/\.[^.]+$/, ""));
+    setScriptText(await file.text());
+  }
+
+  async function ingestScript() {
+    if (!scriptText.trim()) return setIngestMsg("Paste or upload a script first.");
+    setIngestMsg("Ingesting & embedding…");
+    const res = await fetch(`/api/avatars/${id}/knowledge`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: scriptTitle || "Script", text: scriptText }),
+    });
+    const d = await res.json();
+    if (d.ok) {
+      setIngestMsg(`✓ Added ${d.chunks} chunk(s), ${d.embedded} embedded into the vector store.`);
+      setScriptText(""); setScriptTitle("");
+      router.refresh();
+    } else setIngestMsg(`✗ ${d.error || "Failed"}`);
+  }
 
   const origin = typeof window !== "undefined" ? window.location.origin : "";
   const embedSnippet = `<script src="${origin}/embed.js" data-avatar="${embedKey}" async></script>`;
@@ -133,6 +159,35 @@ export default function AvatarActions({
         {msg && <p className="mt-1 text-sm text-red-600">{msg}</p>}
         {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
         {audioUrl && <audio src={audioUrl} controls autoPlay className="mt-2 w-full" />}
+      </div>
+
+      <div>
+        <label className="text-sm font-medium text-slate-700">Train on a script / document (RAG)</label>
+        <p className="text-xs text-slate-500">Upload or paste text — it&apos;s chunked and embedded into the built-in vector store.</p>
+        <div className="mt-2 space-y-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <input
+              value={scriptTitle}
+              onChange={(e) => setScriptTitle(e.target.value)}
+              placeholder="Title (e.g. Course catalogue)"
+              className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm"
+            />
+            <input type="file" accept=".txt,.md,.csv,text/*" onChange={onScriptFile} className="text-sm" />
+          </div>
+          <textarea
+            value={scriptText}
+            onChange={(e) => setScriptText(e.target.value)}
+            rows={4}
+            placeholder="Paste a script, FAQ, product or course content…"
+            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+          />
+          <div className="flex items-center gap-3">
+            <button onClick={ingestScript} className="rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white hover:bg-brand-600">
+              Ingest into vector store
+            </button>
+            {ingestMsg && <span className="text-sm text-slate-600">{ingestMsg}</span>}
+          </div>
+        </div>
       </div>
 
       <div>

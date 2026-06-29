@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { embedMissing } from "@/lib/agent/ingest";
 
 export const dynamic = "force-dynamic";
 
@@ -42,5 +43,7 @@ export async function POST(req: Request) {
         : undefined,
     },
   });
+  // Build the vector index for any new knowledge (best-effort).
+  if (knowledge?.length) await embedMissing(avatar.id);
   return NextResponse.json(avatar);
 }

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { embedMissing } from "@/lib/agent/ingest";
 
 export const dynamic = "force-dynamic";
 
@@ -48,6 +49,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     },
     include: { knowledge: true },
   });
+  if (knowledge) await embedMissing(id); // re-index updated knowledge (best-effort)
   return NextResponse.json(avatar);
 }
 

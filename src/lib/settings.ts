@@ -11,6 +11,7 @@ export const SETTING_KEYS = {
   MINIMAX_BASE_URL: "MINIMAX_BASE_URL",
   MINIMAX_CHAT_MODEL: "MINIMAX_CHAT_MODEL",
   MINIMAX_TTS_MODEL: "MINIMAX_TTS_MODEL",
+  MINIMAX_EMBED_MODEL: "MINIMAX_EMBED_MODEL",
   // Google Gemini (OpenAI-compatible endpoint)
   GEMINI_API_KEY: "GEMINI_API_KEY",
   GEMINI_BASE_URL: "GEMINI_BASE_URL",
@@ -34,6 +35,7 @@ const DEFAULTS: Partial<Record<SettingKey, string>> = {
   MINIMAX_BASE_URL: "https://api.minimax.io/v1",
   MINIMAX_CHAT_MODEL: "MiniMax-M3",
   MINIMAX_TTS_MODEL: "speech-2.8-turbo",
+  MINIMAX_EMBED_MODEL: "embo-01",
   GEMINI_BASE_URL: "https://generativelanguage.googleapis.com/v1beta/openai",
   GEMINI_CHAT_MODEL: "gemini-2.0-flash",
   AVATAR_RENDERER_APP: "bytedance/omnihuman-1-5",

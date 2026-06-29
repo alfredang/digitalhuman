@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { MessageCircle, X } from "lucide-react";
 
-const PHONE = "6596983731"; // wa.me number
+const PHONE = "6588666375"; // wa.me number
 const QUERIES = [
   "I'd like a free Digital Human demo",
   "How much does a digital human cost?",

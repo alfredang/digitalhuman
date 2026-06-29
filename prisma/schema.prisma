@@ -65,6 +65,7 @@ model KnowledgeDoc {
   avatarId   String
   title      String
   content    String
+  embedding  String? // JSON-encoded float[] vector (built-in vector store)
   chunkIndex Int      @default(0)
   createdAt  DateTime @default(now())
 

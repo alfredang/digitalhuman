@@ -43,7 +43,7 @@ const COMPANY = [
 const SOCIAL = [
   { icon: BrandIcon.linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/angchewhoe" },
   { icon: BrandIcon.youtube, label: "YouTube", href: "https://www.youtube.com/@TertiaryCourses" },
-  { icon: BrandIcon.github, label: "GitHub", href: "https://github.com/tertiaryinfotech" },
+  { icon: BrandIcon.github, label: "GitHub", href: "https://github.com/alfredang" },
 ];
 
 export default function SiteFooter() {
@@ -119,7 +119,7 @@ export default function SiteFooter() {
             </li>
             <li className="flex items-center gap-3">
               <MessageCircle className="h-4 w-4 shrink-0 text-indigo-400" strokeWidth={1.75} />
-              <a href="https://wa.me/6596983731" target="_blank" rel="noopener" className="hover:text-white">+65 9698 3731 (WhatsApp)</a>
+              <a href="https://wa.me/6588666375" target="_blank" rel="noopener" className="hover:text-white">+65 8866 6375 (WhatsApp)</a>
             </li>
             <li className="flex items-center gap-3">
               <Mail className="h-4 w-4 shrink-0 text-indigo-400" strokeWidth={1.75} />

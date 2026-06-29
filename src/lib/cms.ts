@@ -27,7 +27,7 @@ export const DEFAULT_PAGES: { slug: string; title: string; content: string }[] =
       <ul>
         <li>Address: 12 Woodlands Square #07-85/86/87 Woods Square Tower 1, Singapore 737715</li>
         <li>Phone: <a href="tel:+6561000613">+65 6100 0613</a></li>
-        <li>WhatsApp: <a href="https://wa.me/6596983731">+65 9698 3731</a></li>
+        <li>WhatsApp: <a href="https://wa.me/6588666375">+65 8866 6375</a></li>
         <li>Email: <a href="mailto:enquiry@tertiaryinfotech.com">enquiry@tertiaryinfotech.com</a></li>
         <li>UEN: 201200606W</li>
       </ul>`,
