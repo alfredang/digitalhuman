@@ -19,12 +19,16 @@ export default function ChatWidget({
   greeting,
   portraitUrl,
   compact = false,
+  demoOff = false,
 }: {
   avatarId: string;
   name: string;
   greeting: string;
   portraitUrl?: string;
   compact?: boolean;
+  // When true, the avatar is shown but the chat is disabled — sending text or
+  // using voice replies with a "demo currently off" notice (no API calls).
+  demoOff?: boolean;
 }) {
   const [messages, setMessages] = useState<Msg[]>([{ role: "assistant", text: greeting }]);
   const [input, setInput] = useState("");
@@ -72,9 +76,16 @@ export default function ChatWidget({
     }
   }
 
+  const DEMO_OFF_MSG = "⚠️ The live demo is currently turned off. Please book a free demo and we'll show you a personalised digital human.";
+
   async function send(text: string) {
     const q = text.trim();
     if (!q || busy) return;
+    if (demoOff) {
+      setInput("");
+      setMessages((m) => [...m, { role: "user", text: q }, { role: "assistant", text: DEMO_OFF_MSG }]);
+      return;
+    }
     setInput("");
     setBusy(true);
     setVideoUrl("");
@@ -179,6 +190,11 @@ export default function ChatWidget({
   }, [videoUrl]);
 
   function toggleMic() {
+    if (demoOff) {
+      setStatus("Live demo is off");
+      setMessages((m) => [...m, { role: "assistant", text: DEMO_OFF_MSG }]);
+      return;
+    }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SR) {
@@ -288,6 +304,12 @@ export default function ChatWidget({
 
       {/* Chatbox below the phone */}
       <div className="flex flex-col overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-slate-200">
+        {demoOff && (
+          <div className="flex items-center justify-center gap-2 border-b border-amber-200 bg-amber-50 px-3 py-2 text-xs font-medium text-amber-700">
+            <span className="h-2 w-2 rounded-full bg-amber-400" />
+            Live demo is currently off — <a href="#enquire" className="underline hover:text-amber-900">book a free demo</a>
+          </div>
+        )}
         {/* Mode toggle */}
         <div className="flex gap-1 border-b border-slate-100 p-2">
           <button

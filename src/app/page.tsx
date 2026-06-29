@@ -151,23 +151,18 @@ export default async function Home() {
           </div>
 
           <div className="lg:pl-6">
-            {demoAvatar ? (
-              <ChatWidget avatarId={demoAvatar.id} name={demoAvatar.name} greeting={demoAvatar.greeting} portraitUrl={demoAvatar.portraitUrl ?? undefined} compact />
-            ) : readyAvatar ? (
-              // An avatar exists but the live demo is switched off (DEMO_ENABLED=false).
-              // Show a polished CTA instead of the raw widget so the page looks intentional.
-              <div className="grid h-[520px] place-items-center rounded-2xl bg-gradient-to-br from-indigo-50 to-white text-center ring-1 ring-slate-200">
-                <div className="px-8">
-                  <p className="text-5xl">🧑‍🏫</p>
-                  <p className="mt-4 text-lg font-semibold text-slate-900">Live demo available on request</p>
-                  <p className="mt-2 text-sm text-slate-600">
-                    Book a free demo and we&apos;ll show your branded digital human — voice, lip-sync and all.
-                  </p>
-                  <a href="#enquire" className="mt-5 inline-block rounded-xl bg-brand px-5 py-3 font-medium text-white shadow-sm hover:bg-brand-600">
-                    Book a free demo
-                  </a>
-                </div>
-              </div>
+            {readyAvatar ? (
+              // Always show the avatar. When the demo is switched off (DEMO_ENABLED=false),
+              // the widget renders read-only: sending text or using voice replies with a
+              // "demo currently off" notice instead of calling the chat API.
+              <ChatWidget
+                avatarId={readyAvatar.id}
+                name={readyAvatar.name}
+                greeting={readyAvatar.greeting}
+                portraitUrl={readyAvatar.portraitUrl ?? undefined}
+                compact
+                demoOff={!demoEnabled}
+              />
             ) : (
               <div className="grid h-[520px] place-items-center rounded-2xl bg-slate-50 text-center ring-1 ring-slate-200">
                 <div className="px-6">
